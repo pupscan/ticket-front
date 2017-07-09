@@ -1,0 +1,7 @@
+http-server: 
+  image: redsadic/docker-http-server:latest
+  restart: unless-stopped
+  ports:
+    - 8080:8080
+  volumes:
+    - ./dist:/public
