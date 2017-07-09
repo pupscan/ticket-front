@@ -172,7 +172,7 @@
       tickets: []
     }),
     mounted () {
-      axios.get(`http://localhost:8080/ticket/main`)
+      axios.get(`http://back:8080/ticket/main`)
         .then((response) => {
           this.datacollection = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -211,19 +211,19 @@
           this.totalUnhappyPercent = Math.round(this.totalUnhappy / this.totalTicket * 100)
           this.isLoaded = true
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/happy`)
+      axios.get(`http://back:8080/ticket/trend/value/happy`)
         .then((response) => {
           this.totalHappyThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/all`)
+      axios.get(`http://back:8080/ticket/trend/value/all`)
         .then((response) => {
           this.totalNewThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/unhappy`)
+      axios.get(`http://back:8080/ticket/trend/value/unhappy`)
         .then((response) => {
           this.totalUnhappThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/all`)
+      axios.get(`http://back:8080/ticket/all`)
         .then((response) => {
           this.tickets = response.data
         })
