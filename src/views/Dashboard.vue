@@ -106,6 +106,14 @@
       </div>
     </div><!--/.card-->
 
+    <div class="input-group">
+      <input v-on:input="debounceInput" placeholder="Global search" class="form-control">
+      <span class="input-group-btn">
+          <button type="button" class="btn btn-primary">
+            <i class="fa fa-search"></i> Find {{ tickets.length }} tickets
+          </button>
+        </span>
+    </div>
     <table class="table table-hover table-outline mb-0">
       <thead class="thead-default">
       <tr>
@@ -151,6 +159,7 @@
   import MainBarChart from './dashboard/MainBarChart'
   import CardLine3ChartExample from './dashboard/CardLine3ChartExample'
   import axios from 'axios'
+  import _ from 'lodash'
 
   export default {
     name: 'dashboard',
@@ -172,7 +181,7 @@
       tickets: []
     }),
     mounted () {
-      axios.get(`http://back:8080/ticket/main`)
+      axios.get(`http://localhost:8080/ticket/main`)
         .then((response) => {
           this.datacollection = {
             labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
@@ -211,22 +220,31 @@
           this.totalUnhappyPercent = Math.round(this.totalUnhappy / this.totalTicket * 100)
           this.isLoaded = true
         })
-      axios.get(`http://back:8080/ticket/trend/value/happy`)
+      axios.get(`http://localhost:8080/ticket/trend/value/happy`)
         .then((response) => {
           this.totalHappyThisWeek = response.data
         })
-      axios.get(`http://back:8080/ticket/trend/value/all`)
+      axios.get(`http://localhost:8080/ticket/trend/value/all`)
         .then((response) => {
           this.totalNewThisWeek = response.data
         })
-      axios.get(`http://back:8080/ticket/trend/value/unhappy`)
+      axios.get(`http://localhost:8080/ticket/trend/value/unhappy`)
         .then((response) => {
           this.totalUnhappThisWeek = response.data
         })
-      axios.get(`http://back:8080/ticket/all`)
+      axios.get(`http://localhost:8080/ticket/all`)
         .then((response) => {
           this.tickets = response.data
         })
+    },
+    methods: {
+      debounceInput: _.debounce(
+        function (e) {
+          axios.post('http://localhost:8080/ticket/search', e.target.value)
+            .then(function (response) {
+              this.tickets = response.data
+            }.bind(this))
+        }, 500)
     }
   }
 

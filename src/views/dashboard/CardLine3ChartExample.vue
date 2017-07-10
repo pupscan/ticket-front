@@ -5,7 +5,7 @@
   export default Line.extend({
     props: ['tag'],
     mounted () {
-      axios.get(`http://back:8080/ticket/trend/` + this.tag)
+      axios.get(`http://localhost:8080/ticket/trend/` + this.tag)
         .then((response) => {
           this.renderChart({
             labels: response.data,
