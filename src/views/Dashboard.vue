@@ -8,10 +8,13 @@
             <div class="h1 text-muted pull-right mb-4">
               <i class="fa fa-plus-circle"></i>
             </div>
-            <h4 class="mb-0">{{totalNewThisWeek}} tickets this week</h4>
-            <p>New</p>
+            <h4 class="mb-0">
+              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalNewThisWeek.trend > 0, 'fa-rotate-90': totalNewThisWeek.trend < 0 }"></i>
+              {{round(totalNewThisWeek.trend, 1)}} %
+            </h4>
+            <p>{{totalNewThisWeek.total}} <b>New</b> tickets this week</p>
           </div>
-          <card-line3-chart-example class="chart-wrapper" style="height:70px;" tag="all"/>
+          <card-line3-chart-example class="chart-wrapper" style="height:70px;" tag="all"></card-line3-chart-example>
         </div>
       </div><!--/.col-->
       <div class="col-sm-6 col-md-4">
@@ -20,10 +23,12 @@
             <div class="h1 text-muted pull-right mb-4">
               <i class="fa fa-smile-o"></i>
             </div>
-            <h4 class="mb-0">{{totalHappyThisWeek}} tickets this week</h4>
-            <p>Happy</p>
+            <h4 class="mb-0">
+              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalHappyThisWeek.trend > 0, 'fa-rotate-90': totalHappyThisWeek.trend < 0 }"></i>
+              {{round(totalHappyThisWeek.trend, 1)}} %</h4>
+            <p>{{totalHappyThisWeek.total}} <b>Happy</b> tickets this week</p>
           </div>
-          <card-line3-chart-example class="chart-wrapper" style="height:70px;" tag="happy"/>
+          <card-line3-chart-example class="chart-wrapper" style="height:70px;" tag="happy"></card-line3-chart-example>
         </div>
       </div><!--/.col-->
       <div class="col-sm-6 col-md-4">
@@ -32,8 +37,10 @@
             <div class="h1 text-muted pull-right mb-4">
               <i class="fa fa-frown-o"></i>
             </div>
-            <h4 class="mb-0">{{totalUnhappThisWeek}} tickets this week</h4>
-            <p>Unhappy</p>
+            <h4 class="mb-0">
+              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalUnhappyThisWeek.trend > 0, 'fa-rotate-90': totalUnhappyThisWeek.trend < 0 }"></i>
+              {{round(totalUnhappyThisWeek.trend, 1)}} %</h4>
+            <p>{{totalUnhappyThisWeek.total}} <b>Unhappy</b> tickets this week</p>
           </div>
           <card-line3-chart-example class="chart-wrapper" style="height:70px;" tag="unhappy"/>
         </div>
@@ -127,13 +134,13 @@
       <tbody>
       <tr v-for="ticket in tickets">
         <td style="width:40%">
-          <div><b>{{ ticket.name }}</b> - {{ ticket.email }}</div>
+          <div><b>{{ ticket.name }}</b> {{ ticket.email ? '-' + ticket.email : ''}}</div>
           <div class="small text-muted">
             <b>{{ ticket.subject }}</b><br/>
             {{ ticket.message }}
           </div>
         </td>
-        <td class="text-center" v-bind:title="ticket.status">
+        <td class="text-center">
           <i class="fa" v-bind:class="{ 'fa-plus-circle': ticket.status === 'new',
           'fa-trash': ticket.status === 'deleted', 'fa-remove ': ticket.status === 'closed',
           'fa-spinner ': ticket.status === 'pending', 'fa-check-square ': ticket.status === 'solved'}"></i>
@@ -174,9 +181,9 @@
       totalUnhappy: 0,
       totalHappyPercent: 0,
       totalUnhappyPercent: 0,
-      totalHappyThisWeek: 0,
-      totalNewThisWeek: 0,
-      totalUnhappyThisWeek: 0,
+      totalHappyThisWeek: {total: 0, trend: 0},
+      totalNewThisWeek: {total: 0, trend: 0},
+      totalUnhappyThisWeek: {total: 0, trend: 0},
       datacollection: {},
       tickets: []
     }),
@@ -184,8 +191,7 @@
       axios.get(`http://localhost:8080/ticket/main`)
         .then((response) => {
           this.datacollection = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October',
-              'November', 'December'],
+            labels: response.data.labels,
             datasets: [
               {
                 label: 'All',
@@ -230,7 +236,7 @@
         })
       axios.get(`http://localhost:8080/ticket/trend/value/unhappy`)
         .then((response) => {
-          this.totalUnhappThisWeek = response.data
+          this.totalUnhappyThisWeek = response.data
         })
       axios.get(`http://localhost:8080/ticket/all`)
         .then((response) => {
@@ -244,7 +250,8 @@
             .then(function (response) {
               this.tickets = response.data
             }.bind(this))
-        }, 500)
+        }, 500),
+      round: (value, precision) => _.round(value, precision)
     }
   }
 
