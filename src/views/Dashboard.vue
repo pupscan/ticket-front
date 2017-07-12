@@ -168,11 +168,8 @@
 <script>
   import MainBarChart from './dashboard/MainBarChart'
   import CardLine3ChartExample from './dashboard/CardLine3ChartExample'
-  import axios from 'axios'
+  import {HTTP} from './axios'
   import _ from 'lodash'
-
-  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : 'http://localhost:8080'
-  axios.create({baseURL: baseURL})
 
   export default {
     name: 'dashboard',
@@ -194,7 +191,7 @@
       tickets: []
     }),
     mounted () {
-      axios.get(`/ticket/main`)
+      HTTP.get(`/ticket/main`)
         .then((response) => {
           this.datacollection = {
             labels: response.data.labels,
@@ -232,19 +229,19 @@
           this.totalUnhappyPercent = Math.round(this.totalUnhappy / this.totalTicket * 100)
           this.isLoaded = true
         })
-      axios.get(`/ticket/trend/value/happy`)
+      HTTP.get(`/ticket/trend/value/happy`)
         .then((response) => {
           this.totalHappyThisWeek = response.data
         })
-      axios.get(`/ticket/trend/value/all`)
+      HTTP.get(`/ticket/trend/value/all`)
         .then((response) => {
           this.totalNewThisWeek = response.data
         })
-      axios.get(`/ticket/trend/value/unhappy`)
+      HTTP.get(`/ticket/trend/value/unhappy`)
         .then((response) => {
           this.totalUnhappyThisWeek = response.data
         })
-      axios.get(`/ticket/all`)
+      HTTP.get(`/ticket/all`)
         .then((response) => {
           this.tickets = response.data
         })
@@ -252,7 +249,7 @@
     methods: {
       debounceInput: _.debounce(
         function (e) {
-          axios.post('/ticket/search', e.target.value)
+          HTTP.post('/ticket/search', e.target.value)
             .then(function (response) {
               this.tickets = response.data
             }.bind(this))

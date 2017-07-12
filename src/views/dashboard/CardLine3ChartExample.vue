@@ -1,11 +1,11 @@
 <script>
   import {Line} from 'vue-chartjs'
-  import axios from 'axios'
+  import {HTTP} from '../axios'
 
   export default Line.extend({
     props: ['tag'],
     mounted () {
-      axios.get(`http://localhost:8080/ticket/trend/` + this.tag)
+      HTTP.get('/ticket/trend/' + this.tag)
         .then((response) => {
           this.renderChart({
             labels: response.data,
