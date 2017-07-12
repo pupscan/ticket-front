@@ -9,7 +9,8 @@
               <i class="fa fa-plus-circle"></i>
             </div>
             <h4 class="mb-0">
-              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalNewThisWeek.trend > 0, 'fa-rotate-90': totalNewThisWeek.trend < 0 }"></i>
+              <i class="fa fa-play"
+                 :class="{ 'fa-rotate-270': totalNewThisWeek.trend > 0, 'fa-rotate-90': totalNewThisWeek.trend < 0 }"></i>
               {{round(totalNewThisWeek.trend, 1)}} %
             </h4>
             <p>{{totalNewThisWeek.total}} <b>New</b> tickets this week</p>
@@ -24,7 +25,8 @@
               <i class="fa fa-smile-o"></i>
             </div>
             <h4 class="mb-0">
-              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalHappyThisWeek.trend > 0, 'fa-rotate-90': totalHappyThisWeek.trend < 0 }"></i>
+              <i class="fa fa-play"
+                 :class="{ 'fa-rotate-270': totalHappyThisWeek.trend > 0, 'fa-rotate-90': totalHappyThisWeek.trend < 0 }"></i>
               {{round(totalHappyThisWeek.trend, 1)}} %</h4>
             <p>{{totalHappyThisWeek.total}} <b>Happy</b> tickets this week</p>
           </div>
@@ -38,7 +40,8 @@
               <i class="fa fa-frown-o"></i>
             </div>
             <h4 class="mb-0">
-              <i class="fa fa-play" :class="{ 'fa-rotate-270': totalUnhappyThisWeek.trend > 0, 'fa-rotate-90': totalUnhappyThisWeek.trend < 0 }"></i>
+              <i class="fa fa-play"
+                 :class="{ 'fa-rotate-270': totalUnhappyThisWeek.trend > 0, 'fa-rotate-90': totalUnhappyThisWeek.trend < 0 }"></i>
               {{round(totalUnhappyThisWeek.trend, 1)}} %</h4>
             <p>{{totalUnhappyThisWeek.total}} <b>Unhappy</b> tickets this week</p>
           </div>
@@ -168,6 +171,9 @@
   import axios from 'axios'
   import _ from 'lodash'
 
+  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : 'http://localhost:8080'
+  axios.create({baseURL: baseURL})
+
   export default {
     name: 'dashboard',
     components: {
@@ -188,7 +194,7 @@
       tickets: []
     }),
     mounted () {
-      axios.get(`http://localhost:8080/ticket/main`)
+      axios.get(`/ticket/main`)
         .then((response) => {
           this.datacollection = {
             labels: response.data.labels,
@@ -226,19 +232,19 @@
           this.totalUnhappyPercent = Math.round(this.totalUnhappy / this.totalTicket * 100)
           this.isLoaded = true
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/happy`)
+      axios.get(`/ticket/trend/value/happy`)
         .then((response) => {
           this.totalHappyThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/all`)
+      axios.get(`/ticket/trend/value/all`)
         .then((response) => {
           this.totalNewThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/trend/value/unhappy`)
+      axios.get(`/ticket/trend/value/unhappy`)
         .then((response) => {
           this.totalUnhappyThisWeek = response.data
         })
-      axios.get(`http://localhost:8080/ticket/all`)
+      axios.get(`/ticket/all`)
         .then((response) => {
           this.tickets = response.data
         })
@@ -246,7 +252,7 @@
     methods: {
       debounceInput: _.debounce(
         function (e) {
-          axios.post('http://localhost:8080/ticket/search', e.target.value)
+          axios.post('/ticket/search', e.target.value)
             .then(function (response) {
               this.tickets = response.data
             }.bind(this))
