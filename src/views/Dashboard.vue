@@ -171,7 +171,7 @@
   import axios from 'axios'
   import _ from 'lodash'
 
-  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : 'http://localhost:8080'
+  const baseURL = process.env.BASE_URL ? process.env.BASE_URL : 'http://api.ticket.pupscan.com'
   axios.create({baseURL: baseURL})
 
   export default {
