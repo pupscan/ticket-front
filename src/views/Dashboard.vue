@@ -127,35 +127,35 @@
     <table class="table table-hover table-outline mb-0">
       <thead class="thead-default">
       <tr>
-        <th>Ticket</th>
-        <th class="text-center">Status</th>
-        <th>Tags</th>
-        <th>Created</th>
-        <th>Link</th>
+        <th class="col-md-6">Ticket</th>
+        <th class="text-center col-md-1">Status</th>
+        <th class="col-md-2">Tags</th>
+        <th class="col-md-2">Created</th>
+        <th class="col-md-1">Link</th>
       </tr>
       </thead>
       <tbody>
       <tr v-for="ticket in tickets">
-        <td class="col-md-6">
-          <div><b>{{ ticket.name }}</b> {{ ticket.email ? '-' + ticket.email : ''}}</div>
-          <div class="small text-muted">
+        <td>
+          <div style="word-break: break-all"><b>{{ ticket.name }}</b> {{ ticket.email ? '-' + ticket.email : ''}}</div>
+          <div style="word-break: break-all" class="small text-muted">
             <b>{{ ticket.subject }}</b><br/>
             {{ ticket.message }}
           </div>
         </td>
-        <td class="text-center col-md-1">
+        <td class="text-center" v-bind:title="ticket.status">
           <i class="fa" v-bind:class="{ 'fa-plus-circle': ticket.status === 'new',
           'fa-trash': ticket.status === 'deleted', 'fa-remove ': ticket.status === 'closed',
           'fa-spinner ': ticket.status === 'pending', 'fa-check-square ': ticket.status === 'solved'}"></i>
         </td>
-        <td class="col-md-2">
+        <td>
           <strong>{{ticket.tags}}</strong>
         </td>
-        <td class="col-md-2">
+        <td>
           <strong>{{ticket.created}}</strong>
           <div class="small text-muted">Upadated: {{ticket.updated}}</div>
         </td>
-        <td class="text-center col-md-1" v-bind:title="ticket.status">
+        <td style="cursor: pointer" class="text-center">
           <i class="fa fa-external-link"></i>
         </td>
       </tr>
