@@ -136,26 +136,26 @@
       </thead>
       <tbody>
       <tr v-for="ticket in tickets">
-        <td style="width:40%">
+        <td class="col-md-6">
           <div><b>{{ ticket.name }}</b> {{ ticket.email ? '-' + ticket.email : ''}}</div>
           <div class="small text-muted">
             <b>{{ ticket.subject }}</b><br/>
             {{ ticket.message }}
           </div>
         </td>
-        <td class="text-center">
+        <td class="text-center col-md-1">
           <i class="fa" v-bind:class="{ 'fa-plus-circle': ticket.status === 'new',
           'fa-trash': ticket.status === 'deleted', 'fa-remove ': ticket.status === 'closed',
           'fa-spinner ': ticket.status === 'pending', 'fa-check-square ': ticket.status === 'solved'}"></i>
         </td>
-        <td>
+        <td class="col-md-2">
           <strong>{{ticket.tags}}</strong>
         </td>
-        <td>
+        <td class="col-md-2">
           <strong>{{ticket.created}}</strong>
           <div class="small text-muted">Upadated: {{ticket.updated}}</div>
         </td>
-        <td class="text-center" v-bind:title="ticket.status">
+        <td class="text-center col-md-1" v-bind:title="ticket.status">
           <i class="fa fa-external-link"></i>
         </td>
       </tr>
