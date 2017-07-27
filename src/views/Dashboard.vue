@@ -119,8 +119,11 @@
     <div class="input-group">
       <input v-on:input="debounceInput" placeholder="Global search" class="form-control">
       <span class="input-group-btn">
-          <button type="button" class="btn btn-primary">
-            <i class="fa fa-search"></i> Find {{ tickets.length }} tickets
+        <button type="button" class="btn btn-primary">
+          <i class="fa fa-search"></i> Find {{ tickets.length }} tickets
+        </button>
+        <button type="button" class="btn btn-success" v-on:click="downloadTicketsSearch()">
+            <i class="icon-cloud-download"></i>
           </button>
         </span>
     </div>
@@ -170,6 +173,7 @@
   import CardLine3ChartExample from './dashboard/CardLine3ChartExample'
   import {HTTP} from './axios'
   import _ from 'lodash'
+  import json2csv from 'json2csv'
 
   export default {
     name: 'dashboard',
@@ -254,7 +258,16 @@
               this.tickets = response.data
             }.bind(this))
         }, 500),
-      round: (value, precision) => _.round(value, precision)
+      round: (value, precision) => _.round(value, precision),
+      downloadTicketsSearch () {
+        let csvData = new Blob([json2csv({data: this.tickets})], {type: 'text/csv;charset=utf-8;'})
+        let link = document.createElement('a')
+        link.href = window.URL.createObjectURL(csvData)
+        link.setAttribute('download', 'file.csv')
+        document.body.appendChild(link)
+        link.click()
+        document.body.removeChild(link)
+      }
     }
   }
 
