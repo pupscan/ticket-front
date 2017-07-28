@@ -140,7 +140,7 @@
       <tbody>
       <tr v-for="ticket in tickets">
         <td>
-          <div style="word-break: break-all"><b>{{ ticket.name }}</b> {{ ticket.email ? '-' + ticket.email : ''}}</div>
+          <div style="word-break: break-all"><b>{{ ticket.name }}</b> {{ ticket.email ? ' - '  + ticket.email : ''}}</div>
           <div style="word-break: break-all" class="small text-muted">
             <b>{{ ticket.subject }}</b><br/>
             {{ ticket.message }}
@@ -158,8 +158,8 @@
           <strong>{{ticket.created}}</strong>
           <div class="small text-muted">Upadated: {{ticket.updated}}</div>
         </td>
-        <td style="cursor: pointer" class="text-center">
-          <i class="fa fa-external-link"></i>
+        <td style="cursor: pointer"class="text-center" >
+          <a :href="'https://pupscan.zendesk.com/agent/tickets/'+ ticket.zenDeskId"><i class="fa fa-external-link"></i></a>
         </td>
       </tr>
       </tbody>
