@@ -7,10 +7,4 @@ yarn-error.log*
 test/unit/coverage
 test/e2e/reports
 selenium-debug.log
-/.idea/codeStyleSettings.xml
-/.idea/dashboard.iml
-/.idea/inspectionProfiles/Project_Default.xml
-/.idea/misc.xml
-/.idea/modules.xml
-/.idea/vcs.xml
-/.idea/workspace.xml
+/.idea
